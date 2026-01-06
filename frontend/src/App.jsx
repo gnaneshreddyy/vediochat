@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import RoomChat from './components/RoomChat';
+import RandomChat from './components/RandomChat';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [mode, setMode] = useState(null); // null, 'room', or 'random'
+
+  if (mode === null) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
+          <h1 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+            Chat App
+          </h1>
+          <div className="space-y-4">
+            <button
+              onClick={() => setMode('room')}
+              className="w-full bg-gray-700 text-white py-3 px-4 rounded hover:bg-gray-600 transition"
+            >
+              Talk to Someone You Know
+            </button>
+            <button
+              onClick={() => setMode('random')}
+              className="w-full bg-gray-700 text-white py-3 px-4 rounded hover:bg-gray-600 transition"
+            >
+              Talk to Random People
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+    <div className="min-h-screen bg-gray-100">
+      <div className="bg-white border-b border-gray-200 p-4">
+        <button
+          onClick={() => setMode(null)}
+          className="text-gray-600 hover:text-gray-800"
+        >
+          ← Back
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      {mode === 'room' && <RoomChat />}
+      {mode === 'random' && <RandomChat />}
+    </div>
+  );
 }
 
-export default App
+export default App;
