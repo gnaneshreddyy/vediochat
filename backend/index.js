@@ -14,12 +14,10 @@ const io = new Server(server, {
   }
 });
 
-// Temporary in-memory storage
-const rooms = new Map(); // roomId -> { hostId, participants: Set }
-const randomQueue = []; // Queue of socket IDs waiting for random match
-const activeRandomPairs = new Map(); // socketId -> matchedSocketId
+const rooms = new Map(); 
+const randomQueue = [];
+const activeRandomPairs = new Map(); 
 
-// Generate random room ID
 function generateRoomId() {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
@@ -27,7 +25,6 @@ function generateRoomId() {
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
 
-  // Room-based chat handlers
   socket.on('create-room', () => {
     const roomId = generateRoomId();
     rooms.set(roomId, {
@@ -74,12 +71,10 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Random chat handlers
   socket.on('find-random', () => {
     if (randomQueue.length > 0 && randomQueue[0] !== socket.id) {
       const matchedSocketId = randomQueue.shift();
       
-      // Remove from queue if it's still there
       const index = randomQueue.indexOf(socket.id);
       if (index > -1) {
         randomQueue.splice(index, 1);
